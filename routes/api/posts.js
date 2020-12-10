@@ -13,8 +13,16 @@ router.post(
   [
     auth,
     [
-      check("title", "Post requires a title").not().isEmpty(),
-      check("text", "Post body must not be empty").not().isEmpty(),
+      check("title", "Enter a title for your post")
+        .trim()
+        .escape()
+        .not()
+        .isEmpty(),
+      check("text", "Post body must not be empty")
+        .trim()
+        .escape()
+        .not()
+        .isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -25,10 +33,6 @@ router.post(
     }
 
     try {
-      const decoded = jwt.verify(req.token, process.env.JWT_SECRET);
-
-      req.user = decoded.user;
-
       const newPost = new Post({
         title: req.body.title,
         text: req.body.text,
@@ -90,5 +94,36 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+router.post(
+  "/:id/comments",
+  [
+    check("name", "Please enter a name").not().isEmpty(),
+    check("text", "Comment must be at least 5 characters").isLength(5),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const post = await Post.findById(req.params.id);
+
+      const comment = {
+        name: req.body.name,
+        text: req.body.text,
+      };
+
+      post.comments.unshift(comment);
+
+      await post.save();
+
+      res.json(post);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 module.exports = router;

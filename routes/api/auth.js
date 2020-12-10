@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 require("dotenv").config();
 
+// Sign in
 router.post("/", async (req, res) => {
   try {
     const { email, password } = req.body;
