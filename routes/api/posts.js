@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const Post = require("../../models/Post");
-const User = require("../../models/User");
+const Tag = require("../../models/Tag");
+const kebabCase = require("lodash").kebabCase;
+
 require("dotenv").config();
 
 // Make a new post
@@ -13,6 +14,10 @@ router.post(
   [
     auth,
     [
+      check("tags.*", "Tags must be fewer than 15 characters")
+        .trim()
+        .escape()
+        .isLength({ max: 15 }),
       check("title", "Enter a title for your post")
         .trim()
         .escape()
@@ -32,11 +37,26 @@ router.post(
       return res.status(400).json(errors.array());
     }
 
+    const tags = await Promise.all(
+      req.body.tags.map(async (tagName) => {
+        const formattedName = kebabCase(tagName.toLowerCase());
+
+        let tag = await Tag.findOneAndUpdate(
+          { name: formattedName },
+          { $setOnInsert: { name: formattedName } },
+          { upsert: true, new: true }
+        );
+
+        return tag;
+      })
+    );
+
     try {
       const newPost = new Post({
         title: req.body.title,
         text: req.body.text,
         user: req.user.id,
+        tags: tags,
       });
 
       const post = await newPost.save();
@@ -52,7 +72,7 @@ router.post(
 // Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate("tags.tag", ["name"]);
 
     res.json(posts);
   } catch (err) {
@@ -98,8 +118,11 @@ router.delete("/:id", async (req, res) => {
 router.post(
   "/:id/comments",
   [
-    check("name", "Please enter a name").not().isEmpty(),
-    check("text", "Comment must be at least 5 characters").isLength(5),
+    check("name", "Please enter a name").trim().escape().not().isEmpty(),
+    check("text", "Comment must be at least 5 characters")
+      .trim()
+      .escape()
+      .isLength(5),
   ],
   async (req, res) => {
     const errors = validationResult(req);
