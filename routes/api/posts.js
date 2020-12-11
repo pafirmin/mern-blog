@@ -37,21 +37,20 @@ router.post(
       return res.status(400).json(errors.array());
     }
 
-    const tags = await Promise.all(
-      req.body.tags.map(async (tagName) => {
-        const formattedName = kebabCase(tagName.toLowerCase());
-
-        let tag = await Tag.findOneAndUpdate(
-          { name: formattedName },
-          { $setOnInsert: { name: formattedName } },
-          { upsert: true, new: true }
-        );
-
-        return tag;
-      })
-    );
-
     try {
+      const tags = await Promise.all(
+        req.body.tags.map(async (tagName) => {
+          const formattedName = kebabCase(tagName.toLowerCase());
+          // Find tag and create new one if it doesn't exist
+          let tag = await Tag.findOneAndUpdate(
+            { name: formattedName },
+            { $setOnInsert: { name: formattedName } },
+            { upsert: true, new: true }
+          );
+          return tag;
+        })
+      );
+
       const newPost = new Post({
         title: req.body.title,
         text: req.body.text,
@@ -72,7 +71,7 @@ router.post(
 // Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find().populate("tags.tag", ["name"]);
+    const posts = await Post.find().populate("tags", ["name"]);
 
     res.json(posts);
   } catch (err) {
@@ -84,7 +83,7 @@ router.get("/", async (req, res) => {
 // Get single post
 router.get("/:id", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate("tags", ["name"]);
 
     if (!post) {
       res.status(404).json({ errors: [{ msg: "Post not found" }] });
@@ -115,6 +114,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Post a comment
 router.post(
   "/:id/comments",
   [

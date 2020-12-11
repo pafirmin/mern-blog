@@ -17,8 +17,8 @@ router.get("/", async (req, res) => {
 // Get all posts with specific tag
 router.get("/:tag", async (req, res) => {
   try {
-    const tag = Tag.findOne({ name: req.params.tag });
-    const posts = await Post.find({ tag: tag._id });
+    const tag = await Tag.findOne({ name: req.params.tag });
+    const posts = await Post.find({ tags: tag._id }).populate("tags", ["name"]);
 
     if (!posts) {
       return res.status(404).json({ errors: { msg: "Tag not found" } });
