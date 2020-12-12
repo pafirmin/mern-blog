@@ -18,10 +18,16 @@ router.get("/", async (req, res) => {
 router.get("/:tag", async (req, res) => {
   try {
     const tag = await Tag.findOne({ name: req.params.tag });
-    const posts = await Post.find({ tags: tag._id }).populate("tags", ["name"]);
+
+    if (!tag) {
+      return res.status(404).json({ msg: "Tag not found" });
+    }
+    const posts = await Post.find({ tags: tag._id })
+      .sort({ date: -1 })
+      .populate("tags", ["name"]);
 
     if (!posts) {
-      return res.status(404).json({ errors: { msg: "Tag not found" } });
+      return res.status(404).json({ msg: "No post found with that tag" });
     }
     res.json(posts);
   } catch (err) {

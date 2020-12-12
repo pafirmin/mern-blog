@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const TagSpan = styled.span`
   color: #414141;
@@ -11,7 +12,11 @@ const TagSpan = styled.span`
 `;
 
 const Tag = ({ tag }) => {
-  return <TagSpan>{tag.name}</TagSpan>;
+  return (
+    <Link to={`/tags/${tag.name}`}>
+      <TagSpan>{tag.name}</TagSpan>
+    </Link>
+  );
 };
 
 export default Tag;

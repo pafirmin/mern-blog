@@ -71,7 +71,9 @@ router.post(
 // Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find().populate("tags", ["name"]);
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate("tags", ["name"]);
 
     res.json(posts);
   } catch (err) {
@@ -119,10 +121,7 @@ router.post(
   "/:id/comments",
   [
     check("name", "Please enter a name").trim().escape().not().isEmpty(),
-    check("text", "Comment must be at least 5 characters")
-      .trim()
-      .escape()
-      .isLength(5),
+    check("text", "Comment must be at least 5 characters").trim().isLength(5),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -137,7 +136,7 @@ router.post(
         text: req.body.text,
       };
 
-      post.comments.unshift(comment);
+      post.comments.push(comment);
 
       await post.save();
 

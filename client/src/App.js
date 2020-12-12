@@ -1,24 +1,30 @@
 import React, { Fragment } from "react";
 import Header from "./components/Header";
-import PostList from "./components/PostList";
-import Post from "./components/Post";
-import TagPage from "./components/TagPage";
-import TagList from "./components/TagList";
+import PostList from "./components/posts/PostList";
+import PostPage from "./components/posts/PostPage";
+import TagPage from "./components/tags/TagPage";
+import TagList from "./components/tags/TagList";
+import Loader from "./components/Loader";
+import { LoadingProvider } from "./components/LoadingContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
   return (
     <Fragment>
-      <Router>
-        <Header />
-
-        <Switch>
-          <Route exact path="/" component={PostList} />
-          <Route exact path="/tags" component={TagList} />
-          <Route path="/tags/:tag" component={TagPage} />
-          <Route path="/posts/:id" component={Post} />
-        </Switch>
-      </Router>
+      <LoadingProvider>
+        <Router>
+          <Loader />
+          <Header />
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={PostList} />
+              <Route path="/posts/:id" component={PostPage} />
+              <Route exact path="/tags" component={TagList} />
+              <Route path="/tags/:tag" component={TagPage} />
+            </Switch>
+          </div>
+        </Router>
+      </LoadingProvider>
     </Fragment>
   );
 };
