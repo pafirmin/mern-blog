@@ -82,10 +82,32 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get posts by page
+router.get("/page/:pageNumber", async (req, res) => {
+  try {
+    const posts = await Post.paginate(
+      {},
+      {
+        page: req.params.pageNumber,
+        populate: ["tags", "user"],
+        limit: 5,
+        sort: { date: -1 },
+      }
+    );
+
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 // Get single post
 router.get("/:id", async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate("tags", ["name"]);
+    const post = await Post.findById(req.params.id)
+      .populate("tags", ["name"])
+      .populate("user");
 
     if (!post) {
       res.status(404).json({ errors: [{ msg: "Post not found" }] });
@@ -99,7 +121,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Delete a post
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -148,4 +170,24 @@ router.post(
   }
 );
 
+router.delete("/:id/comments/:comment_id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    const comment = post.comments.find(
+      (comment) => comment._id.toString() === req.params.comment_id
+    );
+
+    if (!comment) {
+      return res.status(404).json({ msg: "Comment not found" });
+    }
+
+    await comment.delete();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;

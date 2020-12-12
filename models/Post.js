@@ -1,6 +1,6 @@
+const paginate = require("mongoose-paginate-v2");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const TagSchema = require("./Tag");
 
 const PostSchema = new Schema({
   title: {
@@ -42,5 +42,7 @@ const PostSchema = new Schema({
     },
   ],
 });
+
+PostSchema.plugin(paginate);
 
 module.exports = Post = mongoose.model("post", PostSchema);

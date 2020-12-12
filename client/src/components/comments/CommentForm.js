@@ -18,6 +18,7 @@ const CommentForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.target.reset();
     setLoading(true);
 
     try {

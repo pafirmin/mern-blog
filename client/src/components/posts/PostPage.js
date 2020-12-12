@@ -32,9 +32,8 @@ const PostPage = () => {
   return post ? (
     <div>
       <Post post={post} />
-      <h3>{commentCount} Comments</h3>
+      <h3 style={{ paddingLeft: "12px" }}>{commentCount} Comments</h3>
       <CommentSection
-        id="comments"
         setCommentCount={setCommentCount}
         postComments={post.comments}
         postId={post._id}
