@@ -3,16 +3,21 @@ import { Link, useParams } from "react-router-dom";
 import { LoadingContext } from "../LoadingContext";
 import axios from "axios";
 import Post from "./Post";
+import Pages from "./Pages";
 
 const PostList = () => {
   const { pageNum } = useParams();
   const { setLoading } = useContext(LoadingContext);
   const [posts, setPosts] = useState([]);
-  const [pages, setPages] = useState(0);
+  const [pages, setPages] = useState();
 
   useEffect(() => {
     fetchPosts();
   }, [pageNum]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   const fetchPosts = async () => {
     try {
@@ -59,7 +64,7 @@ const PostList = () => {
           </Link>
         </div>
       ))}
-      <div className="pages"> {pages && getPages()} </div>
+      {pages && <Pages pageNum={pageNum} pages={pages} />}
     </div>
   ) : (
     <div />
