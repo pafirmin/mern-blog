@@ -1,15 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./db");
+const path = require("path");
 
 const app = express();
 
 connectDB();
 
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build"));
+});
+
 app.use(cors());
 app.use(express.json({ extended: true }));
-
-app.get("/", (req, res) => res.send("API running"));
 
 app.use("/api/posts", require("./routes/api/posts"));
 app.use("/api/users", require("./routes/api/users"));
