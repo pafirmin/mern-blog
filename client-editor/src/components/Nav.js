@@ -7,6 +7,7 @@ const Nav = () => {
   const logOut = () => {
     dispatch({ type: "logout" });
   };
+
   return (
     <nav style={{ display: "flex", alignItems: "center" }}>
       <ul style={{ listStyle: "none", display: "flex", gap: "14px" }}>

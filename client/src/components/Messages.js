@@ -6,7 +6,7 @@ const Box = styled.div`
     props.type === "error" ? "#ff3434" : "#64be10"};
   border: 1px solid
     ${(props) => (props.type === "error" ? "#ac0202" : "#017101")};
-  border-radius: 20px;
+  border-radius: 20px
   padding: 6px;
   margin: 4px;
   color: white;

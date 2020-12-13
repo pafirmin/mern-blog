@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
+import Message from "./Messages";
 
 const NewPost = () => {
+  const [messages, setMessages] = useState([]);
   const [data, setData] = useState({
     title: "",
     text: "",
@@ -27,17 +29,21 @@ const NewPost = () => {
       };
 
       await axios.post("/api/posts", data, config);
-      e.form.clear();
+
+      setMessages([{ text: "Post submitted", type: "success" }]);
+      e.target.reset();
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
         return { text: err.msg, type: "error" };
       });
-      console.log(errorArray);
+      setMessages(errorArray);
     }
+    setTimeout(() => setMessages([]), 5000);
   };
 
   return (
     <div>
+      {messages && messages.map((msg) => <Message msg={msg} />)}
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">
           <input
@@ -48,7 +54,7 @@ const NewPost = () => {
           />
         </label>
         <label htmlFor="text">
-          <input
+          <textarea
             type="text"
             name="text"
             id="text"
