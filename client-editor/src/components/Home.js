@@ -4,11 +4,13 @@ import { AuthContext } from "../App";
 import Login from "./Login";
 import NewPost from "./NewPost";
 import PostList from "./PostList";
+import Nav from "./Nav";
 
 const Home = () => {
   const { state } = useContext(AuthContext);
   return (
     <Router>
+      <Nav />
       <Switch>
         <Route
           exact
