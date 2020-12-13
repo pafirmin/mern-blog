@@ -2,20 +2,27 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
 import Message from "./Messages";
+import CreatableSelect from "react-select/creatable";
 
 const NewPost = () => {
   const [messages, setMessages] = useState([]);
+  const { state } = useContext(AuthContext);
+  const [tags, setTags] = useState([]);
   const [data, setData] = useState({
     title: "",
     text: "",
+    tags: [],
   });
-  const { state } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleTags = (values) => {
+    setTags([...tags, values]);
   };
 
   const handleSubmit = async (e) => {
@@ -28,9 +35,12 @@ const NewPost = () => {
         },
       };
 
-      await axios.post("/api/posts", data, config);
+      const tagList = tags.map((tag) => tag.value);
+
+      await axios.post("/api/posts", { ...data, tagList }, config);
 
       setMessages([{ text: "Post submitted", type: "success" }]);
+
       e.target.reset();
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
@@ -46,6 +56,7 @@ const NewPost = () => {
       {messages && messages.map((msg) => <Message msg={msg} />)}
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">
+          Title:
           <input
             type="text"
             name="title"
@@ -53,6 +64,7 @@ const NewPost = () => {
             onChange={(e) => handleChange(e)}
           />
         </label>
+        New post:
         <label htmlFor="text">
           <textarea
             type="text"
@@ -61,7 +73,16 @@ const NewPost = () => {
             onChange={(e) => handleChange(e)}
           />
         </label>
-        <button>Submit</button>
+        Tags:
+        <label htmlFor="tags">
+          <CreatableSelect
+            isMulti
+            onChange={handleTags}
+            openMenuOnClick={false}
+            formatCreateLabel={(tag) => `Add '${tag}'`}
+          />
+        </label>
+        <button>Submit new post</button>
       </form>
     </div>
   );

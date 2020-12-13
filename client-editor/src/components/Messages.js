@@ -28,7 +28,7 @@ const Message = ({ msg }) => {
 
   useEffect(() => {
     setColour(getColour(msg.type));
-  }, []);
+  }, [msg]);
 
   return <Box colour={colour}>{msg.text}</Box>;
 };

@@ -40,6 +40,7 @@ router.post(
     try {
       let tags = req.body.tags;
       if (tags) {
+        console.log(tags);
         tags = await Promise.all(
           req.body.tags.map(async (tagName) => {
             const formattedName = kebabCase(tagName.toLowerCase());
