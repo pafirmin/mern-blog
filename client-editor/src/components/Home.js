@@ -12,12 +12,12 @@ const Home = () => {
       <Switch>
         <Route
           exact
-          path="/"
+          path="/newpost"
           component={state.isAuthenticated ? NewPost : Login}
         ></Route>
         <Route
           exact
-          path="/posts"
+          path="/"
           component={state.isAuthenticated ? PostList : Login}
         ></Route>
       </Switch>

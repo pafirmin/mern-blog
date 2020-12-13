@@ -32,7 +32,7 @@ const Login = () => {
 
       dispatch({
         type: "login",
-        payload: res,
+        payload: res.data,
       });
     } catch (err) {
       console.error(err);
