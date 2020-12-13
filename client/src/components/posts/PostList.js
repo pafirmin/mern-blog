@@ -25,28 +25,14 @@ const PostList = () => {
       const page = pageNum || 1;
 
       const res = await axios.get(`/api/posts/page/${page}`);
+      const { docs, totalPages } = res.data;
 
-      const postList = res.data.docs;
-      const pageCount = res.data.totalPages;
-
-      setLoading(false);
-      setPages(pageCount);
-      setPosts(postList);
+      setPages(totalPages);
+      setPosts(docs);
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const getPages = () => {
-    let pageList = [];
-    for (let i = 1; i <= pages; i++) {
-      pageList.push(
-        <Link to={`/page/${i}`}>
-          <span>{i}</span>
-        </Link>
-      );
-    }
-    return pageList;
+    setLoading(false);
   };
 
   return posts ? (

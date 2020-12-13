@@ -34,22 +34,25 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json(errors.array());
+      return res.status(400).json({ errors: errors.array() });
     }
 
     try {
-      const tags = await Promise.all(
-        req.body.tags.map(async (tagName) => {
-          const formattedName = kebabCase(tagName.toLowerCase());
-          // Find tag and create new one if it doesn't exist
-          let tag = await Tag.findOneAndUpdate(
-            { name: formattedName },
-            { $setOnInsert: { name: formattedName } },
-            { upsert: true, new: true }
-          );
-          return tag;
-        })
-      );
+      let tags = req.body.tags;
+      if (tags) {
+        tags = await Promise.all(
+          req.body.tags.map(async (tagName) => {
+            const formattedName = kebabCase(tagName.toLowerCase());
+            // Find tag and create new one if it doesn't exist
+            let tag = await Tag.findOneAndUpdate(
+              { name: formattedName },
+              { $setOnInsert: { name: formattedName } },
+              { upsert: true, new: true }
+            );
+            return tag;
+          })
+        );
+      }
 
       const newPost = new Post({
         title: req.body.title,

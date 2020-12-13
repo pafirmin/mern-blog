@@ -6,7 +6,10 @@ const CommentSection = ({ postComments, postId, setCommentCount }) => {
   const [comments, setComments] = useState(postComments);
 
   return (
-    <div style={{ padding: "0 12px ", width: "60%" }} id="comments">
+    <div
+      style={{ padding: "0 12px ", width: "60%", color: "color: #5e5e5e;" }}
+      id="comments"
+    >
       {comments.map((comment) => (
         <Comment key={comment._id} comment={comment} postId={postId} />
       ))}

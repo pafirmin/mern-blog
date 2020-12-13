@@ -32,7 +32,11 @@ const PostPage = () => {
   return post ? (
     <div>
       <Post post={post} />
-      <h3 style={{ paddingLeft: "12px" }}>{commentCount} Comments</h3>
+      {commentCount > 0 && (
+        <h3 style={{ paddingLeft: "1rem", marginTop: "2rem" }}>
+          {commentCount} Comment{commentCount > 1 && "s"}
+        </h3>
+      )}
       <CommentSection
         setCommentCount={setCommentCount}
         postComments={post.comments}

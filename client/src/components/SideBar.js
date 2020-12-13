@@ -2,13 +2,7 @@ import React from "react";
 
 const SideBar = () => {
   return (
-    <div
-      style={{
-        paddingLeft: "8px",
-        marginLeft: "12px",
-        width: "20%",
-      }}
-    >
+    <div className="side-bar">
       <h3 style={{ padding: "8px 0" }}>External Links</h3>
       <ul>
         <li>

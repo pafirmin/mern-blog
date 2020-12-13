@@ -25,6 +25,7 @@ const Pages = ({ pages, pageNum }) => {
     }
     return pageList;
   };
+
   return (
     <div className="pages">
       {page > 1 && (

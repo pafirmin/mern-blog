@@ -48,7 +48,11 @@ const CommentForm = (props) => {
       {messages &&
         messages.map((msg) => <Message type={msg.type} text={msg.text} />)}
       <form className="comment-form" onSubmit={handleSubmit}>
-        <h3>Leave a comment</h3>
+        {comments.length > 0 ? (
+          <h3>Leave a comment</h3>
+        ) : (
+          <h3>Be the first to leave a comment</h3>
+        )}
         <label htmlFor="name">
           <p>Name:</p>
         </label>
