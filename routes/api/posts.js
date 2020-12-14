@@ -16,18 +16,9 @@ router.post(
     [
       check("tags.*", "Tags must be fewer than 15 characters")
         .trim()
-        .escape()
         .isLength({ max: 15 }),
-      check("title", "Enter a title for your post")
-        .trim()
-        .escape()
-        .not()
-        .isEmpty(),
-      check("text", "Post body must not be empty")
-        .trim()
-        .escape()
-        .not()
-        .isEmpty(),
+      check("title", "Enter a title for your post").trim().not().isEmpty(),
+      check("text", "Post body must not be empty").trim().not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -80,18 +71,9 @@ router.put(
     [
       check("tags.*", "Tags must be fewer than 15 characters")
         .trim()
-        .escape()
         .isLength({ max: 15 }),
-      check("title", "Enter a title for your post")
-        .trim()
-        .escape()
-        .not()
-        .isEmpty(),
-      check("text", "Post body must not be empty")
-        .trim()
-        .escape()
-        .not()
-        .isEmpty(),
+      check("title", "Enter a title for your post").trim().not().isEmpty(),
+      check("text", "Post body must not be empty").trim().not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -197,7 +179,7 @@ router.delete("/:id", auth, async (req, res) => {
 router.post(
   "/:id/comments",
   [
-    check("name", "Please enter a name").trim().escape().not().isEmpty(),
+    check("name", "Please enter a name").trim().not().isEmpty(),
     check("text", "Comment must be at least 5 characters").trim().isLength(5),
   ],
   async (req, res) => {

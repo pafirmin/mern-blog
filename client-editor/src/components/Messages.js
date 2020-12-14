@@ -14,7 +14,7 @@ const getColour = (type) => {
   switch (type) {
     case "success":
       return { bg: "#64be10", font: "#fff" };
-    case "error":
+    case "danger":
       return { bg: "#f33434", font: "#fff" };
     case "warning":
       return { bg: "#fdc52a", font: "#313131" };

@@ -151,9 +151,12 @@ h3 {
 textarea {
   resize: none;
   padding: 0.5rem;
-
   height: 100px;
   font: inherit;
+}
+
+*:focus {
+  outline: none;
 }
 
 .main-header {

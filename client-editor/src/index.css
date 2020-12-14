@@ -107,6 +107,7 @@ section {
 }
 body {
   line-height: 1;
+  font-family: Arial, Helvetica, sans-serif;
 }
 ol,
 ul {
@@ -129,6 +130,8 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  margin: auto;
+  width: 80%;
 }
 a {
   text-decoration: none;
@@ -163,7 +166,22 @@ form button {
   font: inherit;
   color: white;
   border: none;
-  background-color: rgb(45, 158, 233);
+  background-color: #2d9ee9;
   padding: 8px;
   cursor: pointer;
+}
+th {
+  font-weight: 800;
+}
+th:first-child {
+  width: 20%;
+}
+th:last-child {
+  width: 15%;
+}
+td {
+  padding: 6px 0;
+}
+tr:nth-child(even) {
+  background-color: rgb(200, 247, 247);
 }

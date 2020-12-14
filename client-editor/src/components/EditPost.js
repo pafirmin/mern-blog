@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../App";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Message from "./Messages";
+import { Message, Button } from "./Utils";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -20,7 +20,7 @@ const EditPost = () => {
           text,
         });
       } catch (err) {
-        console.err(err);
+        console.error(err);
       }
     };
     fetchPost();
@@ -48,7 +48,7 @@ const EditPost = () => {
       setMessages([{ text: "Post edited", type: "success" }]);
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
-        return { text: err.msg, type: "error" };
+        return { text: err.msg, type: "danger" };
       });
       setMessages(errorArray);
     }
@@ -57,30 +57,33 @@ const EditPost = () => {
 
   return (
     <div>
-      {messages && messages.map((msg) => <Message msg={msg} />)}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">
-          Title:
-          <input
-            type="text"
-            name="title"
-            id="title"
-            onChange={(e) => handleChange(e)}
-            value={post && post.title}
-          />
-        </label>
-        New post:
-        <label htmlFor="text">
-          <textarea
-            type="text"
-            name="text"
-            id="text"
-            onChange={(e) => handleChange(e)}
-            value={post && post.text}
-          />
-        </label>
-        <button>Submit new post</button>
-      </form>
+      {messages &&
+        messages.map((msg) => <Message type={msg.type}>{msg.text}</Message>)}
+      {post && (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="title">
+            Title:
+            <input
+              type="text"
+              name="title"
+              id="title"
+              onChange={(e) => handleChange(e)}
+              value={post.title}
+            />
+          </label>
+          New post:
+          <label htmlFor="text">
+            <textarea
+              type="text"
+              name="text"
+              id="text"
+              onChange={(e) => handleChange(e)}
+              value={post.text}
+            />
+          </label>
+          <Button>Submit changes</Button>
+        </form>
+      )}
     </div>
   );
 };

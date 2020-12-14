@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
-import Message from "./Messages";
+import { Message, Button } from "./Utils";
 import CreatableSelect from "react-select/creatable";
 
 const NewPost = () => {
@@ -11,7 +11,6 @@ const NewPost = () => {
   const [data, setData] = useState({
     title: "",
     text: "",
-    tags: [],
   });
 
   const handleChange = (e) => {
@@ -22,7 +21,7 @@ const NewPost = () => {
   };
 
   const handleTags = (values) => {
-    setTags([...tags, values]);
+    setTags(values);
   };
 
   const handleSubmit = async (e) => {
@@ -36,15 +35,19 @@ const NewPost = () => {
       };
 
       const tagList = tags.map((tag) => tag.value);
+      const newPost = {
+        ...data,
+        tags: tagList,
+      };
 
-      await axios.post("/api/posts", { ...data, tagList }, config);
+      await axios.post("/api/posts", newPost, config);
 
       setMessages([{ text: "Post submitted", type: "success" }]);
 
       e.target.reset();
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
-        return { text: err.msg, type: "error" };
+        return { text: err.msg, type: "danger" };
       });
       setMessages(errorArray);
     }
@@ -53,7 +56,9 @@ const NewPost = () => {
 
   return (
     <div>
-      {messages && messages.map((msg) => <Message msg={msg} />)}
+      {messages.map((msg) => (
+        <Message type={msg.type}>{msg.text}</Message>
+      ))}
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">
           Title:
@@ -84,7 +89,7 @@ const NewPost = () => {
             formatCreateLabel={(tag) => `Add '${tag}'`}
           />
         </label>
-        <button>Submit new post</button>
+        <Button>Submit new post</Button>
       </form>
     </div>
   );
