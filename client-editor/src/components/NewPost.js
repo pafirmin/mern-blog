@@ -62,6 +62,7 @@ const NewPost = () => {
             name="title"
             id="title"
             onChange={(e) => handleChange(e)}
+            value={data.title}
           />
         </label>
         New post:
@@ -71,6 +72,7 @@ const NewPost = () => {
             name="text"
             id="text"
             onChange={(e) => handleChange(e)}
+            value={data.text}
           />
         </label>
         Tags:

@@ -4,18 +4,24 @@ import { AuthContext } from "../App";
 import Login from "./Login";
 import NewPost from "./NewPost";
 import PostList from "./PostList";
+import EditPost from "./EditPost";
 import Nav from "./Nav";
 
 const Home = () => {
   const { state } = useContext(AuthContext);
   return (
     <Router>
-      <Nav />
+      {state.isAuthenticated && <Nav />}
       <Switch>
         <Route
           exact
           path="/newpost"
           component={state.isAuthenticated ? NewPost : Login}
+        ></Route>
+        <Route
+          exact
+          path="/posts/:id"
+          component={state.isAuthenticated ? EditPost : Login}
         ></Route>
         <Route
           exact

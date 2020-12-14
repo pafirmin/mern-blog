@@ -3,6 +3,7 @@ import { AuthContext } from "../App";
 import axios from "axios";
 import moment from "moment";
 import Message from "./Messages";
+import { Link } from "react-router-dom";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -60,6 +61,7 @@ const PostList = () => {
               <td>{post.title}</td>
               <td>
                 <button onClick={() => deletePost(post._id)}>Delete</button>
+                <Link to={`/posts/${post._id}`}>Edit</Link>
               </td>
             </tr>
           ))}

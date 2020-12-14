@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import authReducer from "./authReducer";
-import Header from "./components/Header";
 import Home from "./components/Home";
 import Login from "./components/Login";
 
@@ -27,10 +26,7 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
-      <div>
-        <Header />
-        {state.isAuthenticated ? <Home /> : <Login />}
-      </div>
+      <div>{state.isAuthenticated ? <Home /> : <Login />}</div>
     </AuthContext.Provider>
   );
 };

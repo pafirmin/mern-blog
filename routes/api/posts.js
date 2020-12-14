@@ -72,6 +72,57 @@ router.post(
   }
 );
 
+// Edit a post
+router.put(
+  "/:id",
+  [
+    auth,
+    [
+      check("tags.*", "Tags must be fewer than 15 characters")
+        .trim()
+        .escape()
+        .isLength({ max: 15 }),
+      check("title", "Enter a title for your post")
+        .trim()
+        .escape()
+        .not()
+        .isEmpty(),
+      check("text", "Post body must not be empty")
+        .trim()
+        .escape()
+        .not()
+        .isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let post = await Post.findById(req.params.id);
+
+      if (!post) {
+        return res.status(404).json({ errors: [{ msg: "Post not found" }] });
+      }
+
+      const { title, text } = req.body;
+
+      post.title = title;
+      post.text = text;
+
+      await post.save();
+
+      res.json(post);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ errors: [{ msg: "Server error" }] });
+    }
+  }
+);
+
 // Get all posts
 router.get("/", async (req, res) => {
   try {
@@ -174,6 +225,7 @@ router.post(
   }
 );
 
+// Delete a comment
 router.delete("/:id/comments/:comment_id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
