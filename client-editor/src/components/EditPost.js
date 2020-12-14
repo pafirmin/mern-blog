@@ -45,7 +45,7 @@ const EditPost = () => {
 
       await axios.put(`/api/posts/${id}`, post, config);
 
-      setMessages([{ text: "Post edited", type: "success" }]);
+      setMessages([{ text: "Post updated", type: "success" }]);
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
         return { text: err.msg, type: "danger" };
@@ -58,7 +58,7 @@ const EditPost = () => {
   return (
     <div>
       {messages &&
-        messages.map((msg) => <Message type={msg.type}>{msg.text}</Message>)}
+        messages.map((msg) => <Message variant={msg.type}>{msg.text}</Message>)}
       {post && (
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">

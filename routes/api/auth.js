@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
@@ -25,6 +24,7 @@ router.post("/", async (req, res) => {
     const payload = {
       user: {
         id: user._id,
+        isAdmin: user.isAdmin,
       },
     };
 

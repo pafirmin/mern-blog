@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
-  const [message, setMessage] = useState(null);
+  const [messages, setMessages] = useState([]);
   const { state } = useContext(AuthContext);
 
   useEffect(() => {
@@ -37,17 +37,26 @@ const PostList = () => {
 
       await axios.delete(`api/posts/${postID}`, config);
 
-      setMessage({ type: "warning", text: "Post deleted." });
+      setMessages([{ type: "warning", text: "Post deleted." }]);
       setPosts(newList);
     } catch (err) {
       console.error(err);
+      const errorArray = err.response.data.errors.map((err) => {
+        return { text: err.msg, type: "danger" };
+      });
+      setMessages(errorArray);
     }
-    setTimeout(() => setMessage(null), 5000);
+    setTimeout(() => setMessages(null), 5000);
   };
 
   return (
     <div>
-      {message && <Message variant="danger">message</Message>}
+      {messages &&
+        messages.map((msg, i) => (
+          <Message key={i} variant={msg.type}>
+            {msg.text}
+          </Message>
+        ))}
       <table>
         <tbody>
           <tr style={{ textAlign: "left" }}>

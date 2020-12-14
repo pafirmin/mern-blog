@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
+const checkAdmin = require("../../middleware/checkAdmin");
 const Post = require("../../models/Post");
 const Tag = require("../../models/Tag");
 const kebabCase = require("lodash").kebabCase;
@@ -68,6 +69,7 @@ router.put(
   "/:id",
   [
     auth,
+    checkAdmin,
     [
       check("tags.*", "Tags must be fewer than 15 characters")
         .trim()
@@ -158,7 +160,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Delete a post
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, checkAdmin, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
