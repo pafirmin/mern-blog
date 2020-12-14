@@ -16,7 +16,7 @@ const Pages = ({ pages, pageNum }) => {
     let pageList = [];
     for (let i = 1; i <= pages; i++) {
       pageList.push(
-        <Link to={`/page/${i}`}>
+        <Link key={i} to={`/page/${i}`}>
           <PageNumber index={i} page={page}>
             {i}
           </PageNumber>
@@ -30,13 +30,13 @@ const Pages = ({ pages, pageNum }) => {
     <div className="pages">
       {page > 1 && (
         <Link to={`/page/${page - 1}`}>
-          <i class="fas fa-angle-left" />
+          <i className="fas fa-angle-left" />
         </Link>
       )}
       {getPages()}
       {page < pages && (
         <Link to={`/page/${parseInt(page) + 1}`}>
-          <i class="fas fa-angle-right" />
+          <i className="fas fa-angle-right" />
         </Link>
       )}
     </div>

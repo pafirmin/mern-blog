@@ -19,7 +19,7 @@ const Comment = ({ comment, postId }) => {
             style={{ fontStyle: "italic", color: "#527aae" }}
             title={moment(comment.date).format("dddd[,] Do MMM YYYY")}
           >
-            {moment(comment.date).fromNow()}
+            <time>{moment(comment.date).fromNow()}</time>
           </span>
         </Link>
       </p>

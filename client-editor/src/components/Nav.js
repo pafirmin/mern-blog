@@ -26,7 +26,7 @@ const Nav = () => {
           <Link to="/newpost">New Post</Link>
         </li>
         <li>
-          <Button type="warning" onClick={logOut}>
+          <Button variant="warning" onClick={logOut}>
             Log out
           </Button>
         </li>

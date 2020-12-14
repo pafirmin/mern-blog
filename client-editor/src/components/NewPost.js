@@ -56,9 +56,8 @@ const NewPost = () => {
 
   return (
     <div>
-      {messages.map((msg) => (
-        <Message type={msg.type}>{msg.text}</Message>
-      ))}
+      {messages &&
+        messages.map((msg) => <Message type={msg.type}>{msg.text}</Message>)}
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">
           Title:

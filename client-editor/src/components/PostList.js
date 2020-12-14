@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../App";
 import axios from "axios";
 import moment from "moment";
-import Message from "./Messages";
-import { Button } from "./Utils";
+import { Button, Message } from "./Utils";
 import { Link } from "react-router-dom";
 
 const PostList = () => {
@@ -48,7 +47,7 @@ const PostList = () => {
 
   return (
     <div>
-      {message && <Message msg={message} />}
+      {message && <Message variant="danger">message</Message>}
       <table>
         <tbody>
           <tr style={{ textAlign: "left" }}>
@@ -61,7 +60,7 @@ const PostList = () => {
               <td>{moment(post.date).format("Do, MMM, YYYY")}</td>
               <td>{post.title}</td>
               <td>
-                <Button type="danger" onClick={() => deletePost(post._id)}>
+                <Button variant="danger" onClick={() => deletePost(post._id)}>
                   Delete
                 </Button>
                 <Link to={`/posts/${post._id}`}>Edit</Link>

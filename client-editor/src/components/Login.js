@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
+import { Button } from "./Utils";
 
 const Login = () => {
   const { dispatch } = useContext(AuthContext);
@@ -66,7 +67,7 @@ const Login = () => {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Login</button>
+        <Button>Login</Button>
       </form>
     </div>
   );

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "../comments/CommentSection";
 import Post from "./Post";
-import { LoadingContext } from "../LoadingContext";
+import { LoadingContext } from "../contexts/LoadingContext";
 
 const PostPage = () => {
   const { id } = useParams();

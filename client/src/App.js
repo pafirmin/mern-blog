@@ -6,7 +6,7 @@ import TagPage from "./components/tags/TagPage";
 import TagList from "./components/tags/TagList";
 import Loader from "./components/Loader";
 import SideBar from "./components/SideBar";
-import { LoadingProvider } from "./components/LoadingContext";
+import { LoadingProvider } from "./components/contexts/LoadingContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -17,15 +17,15 @@ const App = () => {
           <Loader />
           <Header />
           <div className="container">
-            <Switch>
-              <div className="content">
+            <div className="content">
+              <Switch>
                 <Route exact path="/" component={PostList} />
                 <Route path="/page/:pageNum" component={PostList} />
                 <Route path="/posts/:id" component={PostPage} />
                 <Route exact path="/tags" component={TagList} />
                 <Route path="/tags/:tag" component={TagPage} />
-              </div>
-            </Switch>
+              </Switch>
+            </div>
             <SideBar />
           </div>
         </Router>

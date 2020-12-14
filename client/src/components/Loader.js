@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Loader from "react-loader-spinner";
-import { LoadingContext } from "./LoadingContext";
+import { LoadingContext } from "./contexts/LoadingContext";
 
 const Spinner = () => {
   const { loading } = useContext(LoadingContext);

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { LoadingContext } from "../LoadingContext";
-import Message from "../Messages";
+import { LoadingContext } from "../contexts/LoadingContext";
+import { Message, Button } from "../Utils";
 
 const CommentForm = (props) => {
   const { comments, setComments, setCommentCount, postId } = props;
@@ -35,7 +35,7 @@ const CommentForm = (props) => {
       setCommentCount(comments.length + 1);
     } catch (err) {
       const errorArray = err.response.data.errors.map((err) => {
-        return { text: err.msg, type: "error" };
+        return { text: err.msg, type: "warning" };
       });
       setMessages(errorArray);
     }
@@ -46,7 +46,7 @@ const CommentForm = (props) => {
   return (
     <div style={{ marginTop: "15px" }}>
       {messages &&
-        messages.map((msg) => <Message type={msg.type} text={msg.text} />)}
+        messages.map((msg) => <Message variant={msg.type}>{msg.text}</Message>)}
       <form className="comment-form" onSubmit={handleSubmit}>
         {comments.length > 0 ? (
           <h3>Leave a comment</h3>
@@ -66,7 +66,7 @@ const CommentForm = (props) => {
           <p>Message:</p>
         </label>
         <textarea id="text" name="text" onChange={(e) => handleChange(e)} />
-        <button type="submit">Leave your message</button>
+        <Button>Leave your message</Button>
       </form>
     </div>
   );

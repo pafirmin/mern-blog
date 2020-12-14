@@ -7,7 +7,7 @@ const CommentSection = ({ postComments, postId, setCommentCount }) => {
 
   return (
     <div
-      style={{ padding: "0 12px ", width: "60%", color: "color: #5e5e5e;" }}
+      style={{ padding: "0 12px ", width: "60%", color: "color: #5e5e5e" }}
       id="comments"
     >
       {comments.map((comment) => (
