@@ -14,6 +14,7 @@ router.post(
   "/",
   [
     auth,
+    checkAdmin,
     [
       check("tags.*", "Tags must be fewer than 15 characters")
         .trim()

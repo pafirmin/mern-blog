@@ -240,7 +240,7 @@ textarea {
 }
 
 .pages {
-  margin-top: 6px;
+  padding: 12px 0;
   display: flex;
   gap: 8px;
   justify-content: center;
